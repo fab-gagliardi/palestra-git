@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Palestra Git</title>
+</head>
+<body>
+  <h1>titolo modificato</h1>
+  <p>Repo palestra per esercizi Git</p>
+
+  <h2>Dati da Supabase</h2>
+  <ul id="lista"></ul>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient(
+      'https://wehbrqaeogkojyfiduol.supabase.co',
+      'sb_publishable_zA5unQeE_F-3In2UcB8AnA_ASH3D9u3'
+    )
+
+    const { data, error } = await supabase.from('items').select('*')
+
+    if (error) {
+      document.getElementById('lista').innerHTML = '<li>Errore: ' + error.message + '</li>'
+    } else {
+      data.forEach(item => {
+        const li = document.createElement('li')
+        li.textContent = item.name
+        document.getElementById('lista').innerHTML += '<li>' + item.name + '</li>'
+      })
+    }
+  </script>
+</body>
+</html>
